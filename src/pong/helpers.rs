@@ -77,9 +77,10 @@ pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
     // Create the left paddle entity
     world
         .create_entity()
-        .with(Paddle::new(Side::Left))
+        .with(Paddle::new(Side::Left, PADDLE_SPEED))
         .with(Size::new(PADDLE_WIDTH, PADDLE_HEIGHT))
         .with(Velocity::empty())
+        .with(DecreaseVelocity::new(0.0, PADDLE_VELOCITY_DECREASE))
         .with(left_transform)
         .with(sprite_render.clone())
         .build();
@@ -87,9 +88,10 @@ pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
     // Create the right paddle entity
     world
         .create_entity()
-        .with(Paddle::new(Side::Right))
+        .with(Paddle::new(Side::Right, PADDLE_SPEED))
         .with(Size::new(PADDLE_WIDTH, PADDLE_HEIGHT))
         .with(Velocity::empty())
+        .with(DecreaseVelocity::new(0.0, PADDLE_VELOCITY_DECREASE))
         .with(right_transform)
         .with(sprite_render.clone())
         .with(Flipped::Horizontal)

@@ -10,6 +10,8 @@ pub mod constants {
 
     pub const PADDLE_WIDTH: f32 = 4.0;
     pub const PADDLE_HEIGHT: f32 = 16.0;
+    pub const PADDLE_SPEED: f32 = 1.0;
+    pub const PADDLE_VELOCITY_DECREASE: f32 = 20.0;
 
     pub const BALL_VELOCITY: [f32; 2] = [75.0, 50.0];
     pub const BALL_RADIUS: f32 = 2.0;

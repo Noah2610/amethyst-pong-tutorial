@@ -9,12 +9,13 @@ pub enum Side {
 }
 
 pub struct Paddle {
-    pub side: Side,
+    pub side:  Side,
+    pub speed: f32,
 }
 
 impl Paddle {
-    pub fn new(side: Side) -> Self {
-        Paddle { side }
+    pub fn new(side: Side, speed: f32) -> Self {
+        Paddle { side, speed }
     }
 }
 

@@ -6,8 +6,6 @@ use amethyst::input::InputHandler;
 use crate::components::{Paddle, Side, Velocity};
 use crate::pong::constants::*;
 
-pub const PADDLE_SPEED: f64 = 1.0;
-
 pub struct PaddleControlSystem;
 
 impl<'s> System<'s> for PaddleControlSystem {
@@ -26,7 +24,7 @@ impl<'s> System<'s> for PaddleControlSystem {
             };
             if let Some(mv_amount) = movement {
                 if mv_amount != 0.0 {
-                    let scaled_amount = (mv_amount * PADDLE_SPEED) as f32;
+                    let scaled_amount = mv_amount as f32 * paddle.speed;
                     velocity.y += scaled_amount;
                 }
             }
