@@ -4,7 +4,7 @@ use amethyst::ecs::{Join, Read, ReadStorage, System, WriteStorage};
 use amethyst::input::InputHandler;
 
 use crate::components::{Paddle, Side};
-use crate::pong::{ARENA_HEIGHT, ARENA_WIDTH, PADDLE_HEIGHT};
+use crate::pong::constants::*;
 
 pub const PADDLE_SPEED: f64 = 70.0;
 
