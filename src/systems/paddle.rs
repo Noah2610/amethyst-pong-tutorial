@@ -14,11 +14,12 @@ impl<'s> System<'s> for PaddleSystem {
     type SystemData = (
         Read<'s, Time>,
         Read<'s, InputHandler<String, String>>,
-        WriteStorage<'s, Transform>,
         ReadStorage<'s, Paddle>,
+        WriteStorage<'s, Transform>,
     );
 
-    fn run(&mut self, (time, input, mut transforms, paddles): Self::SystemData) {
+    fn run(&mut self, (time, input, paddles, mut transforms): Self::SystemData) {
+        let dt = time.delta_seconds();
         for (paddle, transform) in (&paddles, &mut transforms).join() {
             let movement = match paddle.side {
                 Side::Left => input.axis_value("left_paddle"),
@@ -27,9 +28,7 @@ impl<'s> System<'s> for PaddleSystem {
             if let Some(mv_amount) = movement {
                 if mv_amount != 0.0 {
                     let paddle_y = transform.translation().y;
-                    let scaled_amount =
-                        (time.delta_time().as_millis() as f64 * 0.001 * (mv_amount * PADDLE_SPEED))
-                            as f32;
+                    let scaled_amount = (dt * 0.001 * (mv_amount as f32 * PADDLE_SPEED as f32));
                     transform.set_y(
                         (paddle_y + scaled_amount)
                             .min(ARENA_HEIGHT - PADDLE_HEIGHT * 0.5)

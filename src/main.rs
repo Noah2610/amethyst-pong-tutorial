@@ -12,6 +12,7 @@ use amethyst::renderer::{DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stag
 use amethyst::utils::application_root_dir;
 
 use pong::Pong;
+use systems::prelude::*;
 
 fn main() -> amethyst::Result<()> {
     amethyst::start_logger(Default::default());
@@ -36,7 +37,8 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(render_bundle)?
         .with_bundle(transform_bundle)?
         .with_bundle(input_bundle)?
-        .with(systems::PaddleSystem, "paddle_system", &["input_system"]);
+        .with(PaddleSystem, "paddle_system", &["input_system"])
+        .with(MoveBallsSystem, "move_balls_system", &[]);
     let mut game = Application::new("./", Pong, game_data)?;
     game.run();
 
