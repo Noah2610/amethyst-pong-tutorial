@@ -27,8 +27,6 @@ impl<'s> System<'s> for PaddleSystem {
             if let Some(mv_amount) = movement {
                 if mv_amount != 0.0 {
                     let paddle_y = transform.translation().y;
-                    // let scaled_amount =
-                    //     (time.delta_time().as_float_secs() * (mv_amount * PADDLE_SPEED)) as f32;
                     let scaled_amount =
                         (time.delta_time().as_millis() as f64 * 0.001 * (mv_amount * PADDLE_SPEED))
                             as f32;
