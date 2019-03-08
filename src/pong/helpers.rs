@@ -78,6 +78,8 @@ pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
     world
         .create_entity()
         .with(Paddle::new(Side::Left))
+        .with(Size::new(PADDLE_WIDTH, PADDLE_HEIGHT))
+        .with(Velocity::empty())
         .with(left_transform)
         .with(sprite_render.clone())
         .build();
@@ -86,6 +88,8 @@ pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
     world
         .create_entity()
         .with(Paddle::new(Side::Right))
+        .with(Size::new(PADDLE_WIDTH, PADDLE_HEIGHT))
+        .with(Velocity::empty())
         .with(right_transform)
         .with(sprite_render.clone())
         .with(Flipped::Horizontal)
@@ -108,10 +112,8 @@ pub fn initialize_ball(world: &mut World, spritesheet: SpriteSheetHandle) {
     world
         .create_entity()
         .with(sprite_render)
-        .with(Ball {
-            radius:   BALL_RADIUS,
-            velocity: BALL_VELOCITY,
-        })
+        .with(Ball::with_radius(BALL_RADIUS))
+        .with(Velocity::from(BALL_VELOCITY))
         .with(local_transform)
         .build();
 }

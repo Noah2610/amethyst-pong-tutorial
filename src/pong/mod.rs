@@ -21,6 +21,9 @@ impl SimpleState for Pong {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
 
+        use crate::components::prelude::*;
+        world.register::<Ball>();
+
         let spritesheet_handle = load_spritesheet(world);
 
         initialize_ball(world, spritesheet_handle.clone());

@@ -1,10 +1,10 @@
-mod move_balls;
-mod paddle;
+mod move_entities;
+mod paddle_control;
 
 pub mod prelude {
-    pub use super::MoveBallsSystem;
-    pub use super::PaddleSystem;
+    pub use super::MoveEntitiesSystem;
+    pub use super::PaddleControlSystem;
 }
 
-pub use move_balls::MoveBallsSystem;
-pub use paddle::PaddleSystem;
+pub use move_entities::MoveEntitiesSystem;
+pub use paddle_control::PaddleControlSystem;
