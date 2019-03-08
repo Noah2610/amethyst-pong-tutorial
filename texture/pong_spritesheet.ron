@@ -2,14 +2,12 @@
   spritesheet_width:  8,
   spritesheet_height: 16,
   sprites: [
-    // PADDLE
     (
       x:      0,
       y:      0,
       width:  4,
       height: 16,
     ),
-    // BALL
     (
       x:      4,
       y:      0,

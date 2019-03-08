@@ -1,3 +1,5 @@
+use std::fmt::{self, Display};
+
 use amethyst::ecs::prelude::{Component, DenseVecStorage};
 
 #[derive(PartialEq, Eq)]
@@ -24,4 +26,18 @@ impl Paddle {
 
 impl Component for Paddle {
     type Storage = DenseVecStorage<Self>;
+}
+
+impl Display for Side {
+    fn fmt(&self, fmt: &mut fmt::Formatter) -> fmt::Result {
+        use Side::*;
+        write!(
+            fmt,
+            "{}",
+            match self {
+                Left => "Left Paddle",
+                Right => "Right Paddle",
+            }
+        )
+    }
 }

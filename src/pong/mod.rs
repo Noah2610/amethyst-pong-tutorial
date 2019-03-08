@@ -1,5 +1,3 @@
-mod components;
-
 use amethyst::assets::{AssetStorage, Loader};
 use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Component, DenseVecStorage};
@@ -16,8 +14,9 @@ use amethyst::renderer::{
     Texture,
     TextureMetadata,
 };
+use amethyst::utils::application_root_dir;
 
-use components::{Paddle, Side};
+use crate::components::{Paddle, Side};
 
 pub const ARENA_WIDTH: f32 = 100.0;
 pub const ARENA_HEIGHT: f32 = 100.0;
@@ -31,6 +30,7 @@ impl SimpleState for Pong {
     fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
         let world = data.world;
         world.register::<Paddle>();
+
         let spritesheet_handle = load_spritesheet(world);
 
         initialize_paddles(world, spritesheet_handle);
@@ -94,7 +94,7 @@ fn load_spritesheet(world: &mut World) -> SpriteSheetHandle {
     let texture_handle = {
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
         loader.load(
-            "texture/pong_spritesheet.png",
+            format!("{}/texture/pong_spritesheet.png", application_root_dir()),
             PngFormat,
             TextureMetadata::srgb_scale(),
             (),
@@ -103,7 +103,7 @@ fn load_spritesheet(world: &mut World) -> SpriteSheetHandle {
     };
     let spritesheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
-        "texture/pong_spritesheet.ron",
+        format!("{}/texture/pong_spritesheet.ron", application_root_dir()),
         SpriteSheetFormat,
         texture_handle,
         (),
