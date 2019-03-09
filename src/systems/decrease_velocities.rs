@@ -14,16 +14,23 @@ impl<'s> System<'s> for DecreaseVelocitiesSystem {
         WriteStorage<'s, Velocity>,
     );
 
-    fn run(&mut self, (time, decreases, paddles, mut velocities): Self::SystemData) {
+    fn run(
+        &mut self,
+        (time, decreases, paddles, mut velocities): Self::SystemData,
+    ) {
         let dt = time.delta_seconds();
 
         // NON-PADDLES
-        for (decrease, velocity, _) in (&decreases, &mut velocities, !&paddles).join() {
+        for (decrease, velocity, _) in
+            (&decreases, &mut velocities, !&paddles).join()
+        {
             decrease_velocity_for(dt, velocity, decrease);
         }
 
         // PADDLES
-        for (decrease, velocity, paddle) in (&decreases, &mut velocities, &paddles).join() {
+        for (decrease, velocity, paddle) in
+            (&decreases, &mut velocities, &paddles).join()
+        {
             if !paddle.has_moved {
                 decrease_velocity_for(dt, velocity, decrease);
             }
@@ -31,9 +38,16 @@ impl<'s> System<'s> for DecreaseVelocitiesSystem {
     }
 }
 
-fn decrease_velocity_for(dt: f32, velocity: &mut Velocity, decrease: &DecreaseVelocity) {
-    let decr_x = decrease.x * dt;
-    let decr_y = decrease.y * dt;
+fn decrease_velocity_for(
+    dt: f32,
+    velocity: &mut Velocity,
+    decrease: &DecreaseVelocity,
+) {
+    // TODO: Not sure if deltatime is needed here
+    // let decr_x = decrease.x * dt;
+    // let decr_y = decrease.y * dt;
+    let decr_x = decrease.x;
+    let decr_y = decrease.y;
     let sign_x = velocity.x.signum();
     let sign_y = velocity.y.signum();
 

@@ -1,8 +1,8 @@
 (
   title:          "Pong (tutorial)!",
-  dimensions:     Some((500, 500)),
-  max_dimensions: Some((500, 500)),
-  min_dimensions: Some((500, 500)),
+  dimensions:     Some((1200, 800)),
+  max_dimensions: Some((1200, 800)),
+  min_dimensions: Some((1200, 800)),
   fullscreen:     false,
   multisampling:  0,
   visibility:     true,

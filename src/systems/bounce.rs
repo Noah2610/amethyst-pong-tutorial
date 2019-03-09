@@ -1,6 +1,5 @@
-use amethyst::core::timing::Time;
 use amethyst::core::transform::Transform;
-use amethyst::ecs::prelude::{Join, Read, ReadStorage, System, WriteStorage};
+use amethyst::ecs::prelude::{Join, ReadStorage, System, WriteStorage};
 
 use crate::components::prelude::*;
 
@@ -55,6 +54,8 @@ impl<'a> System<'a> for BounceSystem {
                 // lowest coordinates, and adding the ball radius to the highest ones. The ball
                 // is then within the paddle if its centre is within the larger wrapper
                 // rectangle.
+
+                // Something with the collision seems off, kinda offset
                 if point_in_rect(
                     ball_transform,
                     Rect {
