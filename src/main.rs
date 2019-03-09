@@ -42,7 +42,16 @@ fn main() -> amethyst::Result<()> {
             "paddle_control_system",
             &["input_system"],
         )
-        .with(MoveEntitiesSystem, "move_entities_system", &[])
+        .with(
+            LimitVelocitiesSystem,
+            "limit_velocities_system",
+            &["paddle_control_system"],
+        )
+        .with(
+            MoveEntitiesSystem,
+            "move_entities_system",
+            &["limit_velocities_system"],
+        )
         .with(
             DecreaseVelocitiesSystem,
             "decrease_velocites_system",

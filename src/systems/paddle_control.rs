@@ -10,20 +10,23 @@ pub struct PaddleControlSystem;
 
 impl<'s> System<'s> for PaddleControlSystem {
     type SystemData = (
-        // Read<'s, Time>,
         Read<'s, InputHandler<String, String>>,
-        ReadStorage<'s, Paddle>,
+        WriteStorage<'s, Paddle>,
         WriteStorage<'s, Velocity>,
     );
 
-    fn run(&mut self, (input, paddles, mut velocities): Self::SystemData) {
-        for (paddle, velocity) in (&paddles, &mut velocities).join() {
+    fn run(&mut self, (input, mut paddles, mut velocities): Self::SystemData) {
+        for paddle in (&mut paddles).join() {
+            paddle.has_moved = false;
+        }
+        for (paddle, velocity) in (&mut paddles, &mut velocities).join() {
             let movement = match paddle.side {
                 Side::Left => input.axis_value("left_paddle"),
                 Side::Right => input.axis_value("right_paddle"),
             };
             if let Some(mv_amount) = movement {
                 if mv_amount != 0.0 {
+                    paddle.has_moved = true;
                     let scaled_amount = mv_amount as f32 * paddle.speed;
                     velocity.y += scaled_amount;
                 }

@@ -81,6 +81,10 @@ pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
         .with(Size::new(PADDLE_WIDTH, PADDLE_HEIGHT))
         .with(Velocity::empty())
         .with(DecreaseVelocity::new(0.0, PADDLE_VELOCITY_DECREASE))
+        .with(MaxVelocity::new(
+            PADDLE_MAX_VELOCITY_X,
+            PADDLE_MAX_VELOCITY_Y,
+        ))
         .with(left_transform)
         .with(sprite_render.clone())
         .build();
@@ -92,6 +96,10 @@ pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
         .with(Size::new(PADDLE_WIDTH, PADDLE_HEIGHT))
         .with(Velocity::empty())
         .with(DecreaseVelocity::new(0.0, PADDLE_VELOCITY_DECREASE))
+        .with(MaxVelocity::new(
+            PADDLE_MAX_VELOCITY_X,
+            PADDLE_MAX_VELOCITY_Y,
+        ))
         .with(right_transform)
         .with(sprite_render.clone())
         .with(Flipped::Horizontal)
