@@ -8,17 +8,29 @@ mod systems;
 use amethyst::core::transform::TransformBundle;
 use amethyst::input::InputBundle;
 use amethyst::prelude::*;
-use amethyst::renderer::{DisplayConfig, DrawFlat2D, Pipeline, RenderBundle, Stage};
+use amethyst::renderer::{
+    DisplayConfig,
+    DrawFlat2D,
+    Pipeline,
+    RenderBundle,
+    Stage,
+};
 use amethyst::utils::application_root_dir;
+use amethyst::{LogLevelFilter, LoggerConfig};
 
 use pong::Pong;
 use systems::prelude::*;
 
 fn main() -> amethyst::Result<()> {
-    amethyst::start_logger(Default::default());
+    amethyst::start_logger(LoggerConfig {
+        level_filter: LogLevelFilter::Error,
+        ..Default::default()
+    });
 
-    let display_path = format!("{}/resources/display_config.ron", application_root_dir());
-    let binding_path = format!("{}/resources/bindings_config.ron", application_root_dir());
+    let display_path =
+        format!("{}/resources/display_config.ron", application_root_dir());
+    let binding_path =
+        format!("{}/resources/bindings_config.ron", application_root_dir());
 
     let config = DisplayConfig::load(&display_path);
 
@@ -28,10 +40,11 @@ fn main() -> amethyst::Result<()> {
             .with_pass(DrawFlat2D::new()),
     );
 
-    let render_bundle = RenderBundle::new(pipe, Some(config)).with_sprite_sheet_processor();
+    let render_bundle =
+        RenderBundle::new(pipe, Some(config)).with_sprite_sheet_processor();
     let transform_bundle = TransformBundle::new();
-    let input_bundle =
-        InputBundle::<String, String>::new().with_bindings_from_file(binding_path)?;
+    let input_bundle = InputBundle::<String, String>::new()
+        .with_bindings_from_file(binding_path)?;
 
     let game_data = GameDataBuilder::default()
         .with_bundle(render_bundle)?
@@ -51,6 +64,11 @@ fn main() -> amethyst::Result<()> {
             MoveEntitiesSystem,
             "move_entities_system",
             &["limit_velocities_system"],
+        )
+        .with(
+            BounceSystem,
+            "ball_bounce_system",
+            &["move_entities_system"],
         )
         .with(
             DecreaseVelocitiesSystem,

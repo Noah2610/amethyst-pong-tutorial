@@ -25,7 +25,7 @@ impl<'s> System<'s> for MoveEntitiesSystem {
             transform.translate_y(velocity.y * dt);
         }
 
-        // WITH a Size
+        // WITH a Size - clip to arena
         for (velocity, transform, size) in (&velocities, &mut transforms, &sizes).join() {
             let pos_x = transform.translation().x;
             let pos_y = transform.translation().y;
