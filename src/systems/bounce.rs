@@ -59,10 +59,10 @@ impl<'a> System<'a> for BounceSystem {
                 if point_in_rect(
                     ball_transform,
                     Rect {
-                        top:    paddle_y + paddle_size.h + ball.radius,
-                        bottom: paddle_y - ball.radius,
-                        left:   paddle_x - ball.radius,
-                        right:  paddle_x + paddle_size.w + ball.radius,
+                        top:    paddle_y + paddle_size.h * 0.5 + ball.radius,
+                        bottom: paddle_y - paddle_size.h * 0.5 - ball.radius,
+                        left:   paddle_x - paddle_size.w * 0.5 - ball.radius,
+                        right:  paddle_x + paddle_size.w * 0.5 + ball.radius,
                     },
                 ) {
                     if (paddle.side == Side::Left && ball_velocity.x < 0.0)

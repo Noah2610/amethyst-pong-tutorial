@@ -64,7 +64,7 @@ pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
     let mut right_transform = Transform::default();
 
     // Correctly position the paddles
-    let y = ARENA_HEIGHT / 2.0;
+    let y = ARENA_HEIGHT * 0.5;
     left_transform.set_xyz(PADDLE_WIDTH * 0.5, y, 0.0);
     right_transform.set_xyz(ARENA_WIDTH - PADDLE_WIDTH * 0.5, y, 0.0);
 
