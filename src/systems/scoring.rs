@@ -56,11 +56,13 @@ impl<'a> System<'a> for ScoringSystem {
                 false
             };
 
+            // Reset the ball
             if did_hit {
-                velocity.x = -velocity.x; // Reverse direction
+                let sign = velocity.x.signum();
+                velocity.set(BALL_VELOCITY[0], BALL_VELOCITY[1]); // Reset velocity
+                velocity.x = -(velocity.x * sign); // Reverse direction
                 transform.set_x(ARENA_WIDTH * 0.5); // Reset position
-
-                print_score(&scoreboard);
+                print_score(&scoreboard); // Print new score to stdout
             }
         }
     }

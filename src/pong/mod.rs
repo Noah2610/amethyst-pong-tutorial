@@ -17,8 +17,9 @@ pub mod constants {
     pub const PADDLE_MAX_VELOCITY_X: f32 = 0.0;
     pub const PADDLE_MAX_VELOCITY_Y: f32 = 2.0;
 
-    pub const BALL_VELOCITY: [f32; 2] = [30.0, 50.0];
+    pub const BALL_VELOCITY: [f32; 2] = [30.0, 30.0];
     pub const BALL_RADIUS: f32 = 2.0;
+    pub const BALL_SPEED_INCR: f32 = 5.0;
 }
 
 pub struct Pong;

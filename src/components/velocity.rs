@@ -13,6 +13,11 @@ impl Velocity {
     pub fn empty() -> Self {
         Self { x: 0.0, y: 0.0 }
     }
+
+    pub fn set(&mut self, x: f32, y: f32) {
+        self.x = x;
+        self.y = y;
+    }
 }
 
 impl Component for Velocity {

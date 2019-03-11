@@ -64,6 +64,12 @@ impl<'a> System<'a> for BounceSystem {
                         || (paddle.side == Side::Right && ball_velocity.x > 0.0)
                     {
                         ball_velocity.x = -ball_velocity.x;
+                        // Increase the ball's velocity's speed
+                        if ball_velocity.x > 0.0 {
+                            ball_velocity.x += BALL_SPEED_INCR;
+                        } else if ball_velocity.x < 0.0 {
+                            ball_velocity.x -= BALL_SPEED_INCR;
+                        }
                     }
                 }
             }
