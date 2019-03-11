@@ -61,38 +61,6 @@ pub fn initialize_camera(world: &mut World) {
 
 /// Initialize one paddle on the left, and one paddle on the right
 pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
-    use amethyst::assets::Handle;
-    use amethyst::core::nalgebra::{Translation3, UnitQuaternion, Vector3};
-
-    // let coords = {
-    //     // Immutable world borrow starts here
-    //     let sheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
-    //     let sprite_sheet = sheet_store.get(&spritesheet);
-    //     (
-    //         sprite_sheet
-    //             .expect("unwrap sprite_sheet")
-    //             .sprites
-    //             .get(1)
-    //             .expect("unwrap sprite")
-    //             .width,
-    //         sprite_sheet
-    //             .expect("unwrap sprite_sheet")
-    //             .sprites
-    //             .get(1)
-    //             .expect("unwrap sprite")
-    //             .height,
-    //     )
-    // }; // Immutable world borrow ends here
-    // coords.0 is x, coords.1 is y
-
-    // dbg!(coords);
-
-    // Create translations
-    // let mut left_transform = Transform::new(
-    //     Translation3::new(0.0, 0.0, 0.0),
-    //     UnitQuaternion::new(Vector3::new(0.0, 0.0, 0.0)), // rotation
-    //     Vector3::new(1.0, 1.0, 0.0),                      // scale
-    // );
     let mut left_transform = Transform::default();
     let mut right_transform = Transform::default();
 
@@ -112,6 +80,7 @@ pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
         .create_entity()
         .with(Paddle::new(Side::Left, PADDLE_SPEED))
         .with(Size::new(PADDLE_WIDTH, PADDLE_HEIGHT))
+        .with(Scale::new())
         .with(Velocity::empty())
         .with(DecreaseVelocity::new(0.0, PADDLE_VELOCITY_DECREASE))
         .with(MaxVelocity::new(
@@ -127,6 +96,7 @@ pub fn initialize_paddles(world: &mut World, spritesheet: SpriteSheetHandle) {
         .create_entity()
         .with(Paddle::new(Side::Right, PADDLE_SPEED))
         .with(Size::new(PADDLE_WIDTH, PADDLE_HEIGHT))
+        .with(Scale::new())
         .with(Velocity::empty())
         .with(DecreaseVelocity::new(0.0, PADDLE_VELOCITY_DECREASE))
         .with(MaxVelocity::new(

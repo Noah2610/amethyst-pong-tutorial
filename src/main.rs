@@ -81,7 +81,7 @@ fn main() -> amethyst::Result<()> {
             &["move_entities_system"],
         )
         .with(ScoringSystem, "scoring_system", &["move_entities_system"])
-        .with(ScalePaddleSystem::new(), "scale_paddle_system", &[])
+        .with(ScaleSpritesSystem, "scale_sprites_system", &[])
         // .with(RotatorSystem, "rotate_system", &[])
         ;
     let mut game = Application::new("./", Pong, game_data)?;

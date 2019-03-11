@@ -21,8 +21,8 @@ pub mod constants {
     pub const BALL_VELOCITY: [f32; 2] = [30.0, 30.0];
     pub const BALL_RADIUS: f32 = 2.0;
     pub const BALL_SPEED_INCR: [f32; 2] = [5.0, 5.0];
-    pub const BALL_ROTATE_AMOUNT: f32 = 10.0;
-    pub const BALL_ROTATE_DELAY_MS: u64 = 50;
+    // pub const BALL_ROTATE_AMOUNT: f32 = 10.0;
+    // pub const BALL_ROTATE_DELAY_MS: u64 = 50;
 }
 
 pub struct Pong;
