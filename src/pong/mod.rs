@@ -1,5 +1,6 @@
+pub mod scoreboard;
+
 mod helpers;
-mod scoreboard;
 
 use amethyst::prelude::*;
 

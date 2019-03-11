@@ -132,8 +132,10 @@ pub fn initialize_ball(world: &mut World, spritesheet: SpriteSheetHandle) {
 
 /// Initialize the scoreboard
 pub fn initialize_scoreboard(world: &mut World) {
+    const FONT_SIZE: f32 = 50.0;
+
     let font = world.read_resource::<Loader>().load(
-        "fonts/square.ttf",
+        resource("fonts/square.ttf"),
         TtfFormat,
         Default::default(),
         (),
@@ -158,7 +160,7 @@ pub fn initialize_scoreboard(world: &mut World) {
             font.clone(),
             "0".to_string(),
             [1.0, 1.0, 1.0, 1.0],
-            50.0,
+            FONT_SIZE,
         ))
         .build();
 
@@ -169,7 +171,7 @@ pub fn initialize_scoreboard(world: &mut World) {
             font.clone(),
             "0".to_string(),
             [1.0, 1.0, 1.0, 1.0],
-            50.0,
+            FONT_SIZE,
         ))
         .build();
 
@@ -185,11 +187,11 @@ fn new_ui_transform<T: ToString>(
     UiTransform::new(
         name.to_string(),
         anchor,
-        pos.0, // ? x
-        pos.1, // ? y
-        pos.2, // ? z
-        pos.3, // ? width
-        pos.4, // ? height
-        pos.5, // ?
+        pos.0, // x
+        pos.1, // y
+        pos.2, // z
+        pos.3, // width
+        pos.4, // height
+        pos.5, // tab-order (?)
     )
 }
