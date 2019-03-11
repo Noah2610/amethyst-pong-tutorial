@@ -1,9 +1,14 @@
 extern crate amethyst;
 
+mod resource_helpers;
+
 mod pong;
+mod rect;
 
 mod components;
 mod systems;
+
+pub use self::resource_helpers::*;
 
 use amethyst::core::transform::TransformBundle;
 use amethyst::input::InputBundle;
@@ -15,7 +20,7 @@ use amethyst::renderer::{
     RenderBundle,
     Stage,
 };
-use amethyst::utils::application_root_dir;
+use amethyst::ui::{DrawUi, UiBundle};
 use amethyst::{LogLevelFilter, LoggerConfig};
 
 use pong::Pong;
@@ -27,17 +32,16 @@ fn main() -> amethyst::Result<()> {
         ..Default::default()
     });
 
-    let display_path =
-        format!("{}/resources/display_config.ron", application_root_dir());
-    let binding_path =
-        format!("{}/resources/bindings_config.ron", application_root_dir());
+    let display_path = resource("config/display_config.ron");
+    let binding_path = resource("config/bindings_config.ron");
 
     let config = DisplayConfig::load(&display_path);
 
     let pipe = Pipeline::build().with_stage(
         Stage::with_backbuffer()
             .clear_target([0.0, 0.0, 0.0, 1.0], 1.0)
-            .with_pass(DrawFlat2D::new()),
+            .with_pass(DrawFlat2D::new())
+            .with_pass(DrawUi::new()),
     );
 
     let render_bundle =
@@ -50,6 +54,7 @@ fn main() -> amethyst::Result<()> {
         .with_bundle(render_bundle)?
         .with_bundle(transform_bundle)?
         .with_bundle(input_bundle)?
+        .with_bundle(UiBundle::<String, String>::new())?
         .with(
             PaddleControlSystem,
             "paddle_control_system",

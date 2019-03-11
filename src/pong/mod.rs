@@ -1,4 +1,5 @@
 mod helpers;
+mod scoreboard;
 
 use amethyst::prelude::*;
 
@@ -33,5 +34,7 @@ impl SimpleState for Pong {
         initialize_ball(world, spritesheet_handle.clone());
         initialize_paddles(world, spritesheet_handle);
         initialize_camera(world);
+
+        initialize_scoreboard(world);
     }
 }

@@ -13,10 +13,12 @@ use amethyst::renderer::{
     Texture,
     TextureMetadata,
 };
-use amethyst::utils::application_root_dir;
+use amethyst::ui::{Anchor, TtfFormat, UiText, UiTransform};
 
 use super::constants::*;
+use super::scoreboard::prelude::*;
 use crate::components::prelude::*;
+use crate::resource;
 
 /// Load the spritesheet for the game
 pub fn load_spritesheet(world: &mut World) -> SpriteSheetHandle {
@@ -24,7 +26,7 @@ pub fn load_spritesheet(world: &mut World) -> SpriteSheetHandle {
     let texture_handle = {
         let texture_storage = world.read_resource::<AssetStorage<Texture>>();
         loader.load(
-            format!("{}/texture/pong_spritesheet.png", application_root_dir()),
+            resource("textures/pong_spritesheet.png"),
             PngFormat,
             TextureMetadata::srgb_scale(),
             (),
@@ -33,7 +35,7 @@ pub fn load_spritesheet(world: &mut World) -> SpriteSheetHandle {
     };
     let spritesheet_store = world.read_resource::<AssetStorage<SpriteSheet>>();
     loader.load(
-        format!("{}/texture/pong_spritesheet.ron", application_root_dir()),
+        resource("textures/pong_spritesheet.ron"),
         SpriteSheetFormat,
         texture_handle,
         (),
@@ -126,4 +128,68 @@ pub fn initialize_ball(world: &mut World, spritesheet: SpriteSheetHandle) {
         .with(Velocity::from(BALL_VELOCITY))
         .with(local_transform)
         .build();
+}
+
+/// Initialize the scoreboard
+pub fn initialize_scoreboard(world: &mut World) {
+    let font = world.read_resource::<Loader>().load(
+        "fonts/square.ttf",
+        TtfFormat,
+        Default::default(),
+        (),
+        &world.read_resource(),
+    );
+
+    let p1_transform = new_ui_transform(
+        "P1",
+        Anchor::TopMiddle,
+        (-50.0, -50.0, 1.0, 200.0, 50.0, 0),
+    );
+    let p2_transform = new_ui_transform(
+        "P2",
+        Anchor::TopMiddle,
+        (50.0, -50.0, 1.0, 200.0, 50.0, 0),
+    );
+
+    let p1_score = world
+        .create_entity()
+        .with(p1_transform)
+        .with(UiText::new(
+            font.clone(),
+            "0".to_string(),
+            [1.0, 1.0, 1.0, 1.0],
+            50.0,
+        ))
+        .build();
+
+    let p2_score = world
+        .create_entity()
+        .with(p2_transform)
+        .with(UiText::new(
+            font.clone(),
+            "0".to_string(),
+            [1.0, 1.0, 1.0, 1.0],
+            50.0,
+        ))
+        .build();
+
+    world.add_resource(ScoreText::new(p1_score, p2_score));
+}
+
+/// `UiTransform::new` wrapper
+fn new_ui_transform<T: ToString>(
+    name: T,
+    anchor: Anchor,
+    pos: (f32, f32, f32, f32, f32, i32),
+) -> UiTransform {
+    UiTransform::new(
+        name.to_string(),
+        anchor,
+        pos.0, // ? x
+        pos.1, // ? y
+        pos.2, // ? z
+        pos.3, // ? width
+        pos.4, // ? height
+        pos.5, // ?
+    )
 }
