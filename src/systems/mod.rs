@@ -3,6 +3,8 @@ mod decrease_velocities;
 mod limit_velocities;
 mod move_entities;
 mod paddle_control;
+// mod rotator;
+mod scale_paddle;
 mod scoring;
 
 pub mod prelude {
@@ -11,6 +13,8 @@ pub mod prelude {
     pub use super::LimitVelocitiesSystem;
     pub use super::MoveEntitiesSystem;
     pub use super::PaddleControlSystem;
+    // pub use super::RotatorSystem;
+    pub use super::ScalePaddleSystem;
     pub use super::ScoringSystem;
 }
 
@@ -19,4 +23,6 @@ pub use decrease_velocities::DecreaseVelocitiesSystem;
 pub use limit_velocities::LimitVelocitiesSystem;
 pub use move_entities::MoveEntitiesSystem;
 pub use paddle_control::PaddleControlSystem;
+// pub use rotator::RotatorSystem;
+pub use scale_paddle::ScalePaddleSystem;
 pub use scoring::ScoringSystem;

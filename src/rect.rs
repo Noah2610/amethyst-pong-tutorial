@@ -49,3 +49,14 @@ impl RectBuilder {
         }
     }
 }
+
+impl From<&Rect> for RectBuilder {
+    fn from(rect: &Rect) -> RectBuilder {
+        RectBuilder {
+            top:    rect.top,
+            bottom: rect.bottom,
+            left:   rect.left,
+            right:  rect.right,
+        }
+    }
+}

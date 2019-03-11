@@ -3,6 +3,7 @@ pub mod scoreboard;
 mod helpers;
 
 use amethyst::prelude::*;
+use amethyst::renderer::SpriteSheetHandle;
 
 use helpers::*;
 
@@ -11,7 +12,7 @@ pub mod constants {
     pub const ARENA_HEIGHT: f32 = 100.0;
 
     pub const PADDLE_WIDTH: f32 = 4.0;
-    pub const PADDLE_HEIGHT: f32 = 16.0;
+    pub const PADDLE_HEIGHT: f32 = 32.0;
     pub const PADDLE_SPEED: f32 = 2.0;
     pub const PADDLE_VELOCITY_DECREASE: f32 = 2.0;
     pub const PADDLE_MAX_VELOCITY_X: f32 = 0.0;
@@ -19,7 +20,9 @@ pub mod constants {
 
     pub const BALL_VELOCITY: [f32; 2] = [30.0, 30.0];
     pub const BALL_RADIUS: f32 = 2.0;
-    pub const BALL_SPEED_INCR: f32 = 5.0;
+    pub const BALL_SPEED_INCR: [f32; 2] = [5.0, 5.0];
+    pub const BALL_ROTATE_AMOUNT: f32 = 10.0;
+    pub const BALL_ROTATE_DELAY_MS: u64 = 50;
 }
 
 pub struct Pong;
@@ -34,9 +37,12 @@ impl SimpleState for Pong {
         let spritesheet_handle = load_spritesheet(world);
 
         initialize_ball(world, spritesheet_handle.clone());
-        initialize_paddles(world, spritesheet_handle);
+        initialize_paddles(world, spritesheet_handle.clone());
         initialize_camera(world);
 
         initialize_scoreboard(world);
+
+        world.register::<SpriteSheetHandle>();
+        world.add_resource(spritesheet_handle);
     }
 }
