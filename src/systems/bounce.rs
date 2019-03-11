@@ -2,15 +2,8 @@ use amethyst::core::transform::Transform;
 use amethyst::ecs::prelude::{Join, ReadStorage, System, WriteStorage};
 
 use crate::components::prelude::*;
-
 use crate::pong::constants::*;
-
-struct Rect {
-    pub top:    f32,
-    pub bottom: f32,
-    pub left:   f32,
-    pub right:  f32,
-}
+use crate::rect::Rect;
 
 pub struct BounceSystem;
 
@@ -46,8 +39,10 @@ impl<'a> System<'a> for BounceSystem {
             for (paddle, paddle_transform, paddle_size) in
                 (&paddles, &transforms, &sizes).join()
             {
-                let paddle_x = paddle_transform.translation().x;
-                let paddle_y = paddle_transform.translation().y;
+                let paddle_x =
+                    paddle_transform.translation().x - paddle_size.w * 0.5;
+                let paddle_y =
+                    paddle_transform.translation().y - paddle_size.h * 0.5;
 
                 // To determine whether the ball has collided with a paddle, we create a larger
                 // rectangle around the current one, by subtracting the ball radius from the
@@ -59,10 +54,10 @@ impl<'a> System<'a> for BounceSystem {
                 if point_in_rect(
                     ball_transform,
                     Rect {
-                        top:    paddle_y + paddle_size.h * 0.5 + ball.radius,
-                        bottom: paddle_y - paddle_size.h * 0.5 - ball.radius,
-                        left:   paddle_x - paddle_size.w * 0.5 - ball.radius,
-                        right:  paddle_x + paddle_size.w * 0.5 + ball.radius,
+                        top:    paddle_y + paddle_size.h + ball.radius,
+                        bottom: paddle_y - ball.radius,
+                        left:   paddle_x - ball.radius,
+                        right:  paddle_x + paddle_size.w + ball.radius,
                     },
                 ) {
                     if (paddle.side == Side::Left && ball_velocity.x < 0.0)
