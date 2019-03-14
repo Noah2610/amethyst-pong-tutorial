@@ -2,8 +2,10 @@ extern crate amethyst;
 
 mod resource_helpers;
 
+mod custom_game_data;
 mod pong;
 mod rect;
+mod states;
 
 mod components;
 mod systems;
