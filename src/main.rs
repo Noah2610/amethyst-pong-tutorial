@@ -25,7 +25,7 @@ use amethyst::ui::{DrawUi, UiBundle};
 use amethyst::{LogLevelFilter, LoggerConfig};
 
 use custom_game_data::prelude::*;
-use pong::Pong;
+use pong::Game;
 use systems::prelude::*;
 
 fn main() -> amethyst::Result<()> {
@@ -61,7 +61,9 @@ fn main() -> amethyst::Result<()> {
         .with_running(
             PaddleControlSystem,
             "paddle_control_system",
-            &["input_system"],
+            //&["input_system"],  // TODO: Figure out how to get this dependency check to work
+                                  //       again, using CustomGameDataBuilder
+            &[],
         )
         .with_running(
             LimitVelocitiesSystem,
@@ -87,7 +89,7 @@ fn main() -> amethyst::Result<()> {
         .with_running(ScaleSpritesSystem, "scale_sprites_system", &[])
         // .with(RotatorSystem, "rotate_system", &[])
         ;
-    let mut game = Application::new("./", pong::states::Main, game_data)?;
+    let mut game = Application::new("./", Game, game_data)?;
     game.run();
 
     Ok(())

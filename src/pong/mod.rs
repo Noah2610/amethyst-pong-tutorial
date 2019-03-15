@@ -1,35 +1,22 @@
 pub mod scoreboard;
 
 mod helpers;
-pub mod states;
 
-use amethyst::prelude::*;
-use amethyst::renderer::SpriteSheetHandle;
+use amethyst::input::{is_close_requested, is_key_down};
+use amethyst::renderer::{SpriteSheetHandle, VirtualKeyCode};
+use amethyst::{State, StateData, StateEvent, Trans};
+
+use crate::custom_game_data::prelude::*;
 
 use helpers::*;
 
-pub mod constants {
-    pub const ARENA_WIDTH: f32 = 100.0;
-    pub const ARENA_HEIGHT: f32 = 100.0;
+pub mod constants;
 
-    pub const PADDLE_WIDTH: f32 = 4.0;
-    pub const PADDLE_HEIGHT: f32 = 32.0;
-    pub const PADDLE_SPEED: f32 = 2.0;
-    pub const PADDLE_VELOCITY_DECREASE: f32 = 2.0;
-    pub const PADDLE_MAX_VELOCITY_X: f32 = 0.0;
-    pub const PADDLE_MAX_VELOCITY_Y: f32 = 2.0;
+pub struct Game;
+pub struct Paused;
 
-    pub const BALL_VELOCITY: [f32; 2] = [30.0, 30.0];
-    pub const BALL_RADIUS: f32 = 2.0;
-    pub const BALL_SPEED_INCR: [f32; 2] = [5.0, 5.0];
-    // pub const BALL_ROTATE_AMOUNT: f32 = 10.0;
-    // pub const BALL_ROTATE_DELAY_MS: u64 = 50;
-}
-
-pub struct Pong;
-
-impl SimpleState for Pong {
-    fn on_start(&mut self, data: StateData<'_, GameData<'_, '_>>) {
+impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Game {
+    fn on_start(&mut self, data: StateData<CustomGameData>) {
         let world = data.world;
 
         use crate::components::prelude::*;
@@ -45,5 +32,68 @@ impl SimpleState for Pong {
 
         world.register::<SpriteSheetHandle>();
         world.add_resource(spritesheet_handle);
+    }
+
+    fn handle_event(
+        &mut self,
+        _: StateData<CustomGameData>,
+        event: StateEvent,
+    ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
+        use constants::keys::*;
+
+        if let StateEvent::Window(event) = &event {
+            if is_close_requested(&event) || is_key_down(&event, QUIT_KEY) {
+                Trans::Quit
+            } else if is_key_down(&event, PAUSE_KEY) {
+                Trans::Push(Box::new(Paused))
+            } else {
+                Trans::None
+            }
+        } else {
+            Trans::None
+        }
+    }
+
+    fn update(
+        &mut self,
+        data: StateData<CustomGameData>,
+    ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
+        data.data.update(&data.world, true);
+        Trans::None
+    }
+}
+
+impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Paused {
+    fn on_start(&mut self, data: StateData<CustomGameData>) {
+        // Create paused UI
+    }
+
+    fn handle_event(
+        &mut self,
+        data: StateData<CustomGameData>,
+        event: StateEvent,
+    ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
+        use constants::keys::*;
+
+        if let StateEvent::Window(event) = &event {
+            if is_close_requested(&event) || is_key_down(&event, QUIT_KEY) {
+                Trans::Quit
+            } else if is_key_down(&event, PAUSE_KEY) {
+                // Remove paused UI
+                Trans::Pop
+            } else {
+                Trans::None
+            }
+        } else {
+            Trans::None
+        }
+    }
+
+    fn update(
+        &mut self,
+        data: StateData<CustomGameData>,
+    ) -> Trans<CustomGameData<'a, 'b>, StateEvent> {
+        data.data.update(&data.world, false); // `false` to say that the main game is not running (paused)
+        Trans::None
     }
 }
