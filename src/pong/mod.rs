@@ -29,9 +29,6 @@ impl<'a, 'b> State<CustomGameData<'a, 'b>, StateEvent> for Game {
         initialize_camera(world);
 
         initialize_scoreboard(world);
-
-        world.register::<SpriteSheetHandle>();
-        world.add_resource(spritesheet_handle);
     }
 
     fn handle_event(
