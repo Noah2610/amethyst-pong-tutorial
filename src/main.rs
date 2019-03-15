@@ -5,7 +5,6 @@ mod resource_helpers;
 mod custom_game_data;
 mod pong;
 mod rect;
-mod states;
 
 mod components;
 mod systems;
@@ -25,6 +24,7 @@ use amethyst::renderer::{
 use amethyst::ui::{DrawUi, UiBundle};
 use amethyst::{LogLevelFilter, LoggerConfig};
 
+use custom_game_data::prelude::*;
 use pong::Pong;
 use systems::prelude::*;
 
@@ -52,41 +52,42 @@ fn main() -> amethyst::Result<()> {
     let input_bundle = InputBundle::<String, String>::new()
         .with_bindings_from_file(binding_path)?;
 
-    let game_data = GameDataBuilder::default()
-        .with_bundle(render_bundle)?
-        .with_bundle(transform_bundle)?
-        .with_bundle(input_bundle)?
-        .with_bundle(UiBundle::<String, String>::new())?
-        .with(
+    // let game_data = GameDataBuilder::default()
+    let game_data = CustomGameDataBuilder::default()
+        .with_base_bundle(render_bundle)?
+        .with_base_bundle(transform_bundle)?
+        .with_base_bundle(input_bundle)?
+        .with_base_bundle(UiBundle::<String, String>::new())?
+        .with_running(
             PaddleControlSystem,
             "paddle_control_system",
             &["input_system"],
         )
-        .with(
+        .with_running(
             LimitVelocitiesSystem,
             "limit_velocities_system",
             &["paddle_control_system"],
         )
-        .with(
+        .with_running(
             MoveEntitiesSystem,
             "move_entities_system",
             &["limit_velocities_system"],
         )
-        .with(
+        .with_running(
             BounceSystem,
             "ball_bounce_system",
             &["move_entities_system"],
         )
-        .with(
+        .with_running(
             DecreaseVelocitiesSystem,
             "decrease_velocites_system",
             &["move_entities_system"],
         )
-        .with(ScoringSystem, "scoring_system", &["move_entities_system"])
-        .with(ScaleSpritesSystem, "scale_sprites_system", &[])
+        .with_running(ScoringSystem, "scoring_system", &["move_entities_system"])
+        .with_running(ScaleSpritesSystem, "scale_sprites_system", &[])
         // .with(RotatorSystem, "rotate_system", &[])
         ;
-    let mut game = Application::new("./", Pong, game_data)?;
+    let mut game = Application::new("./", pong::states::Main, game_data)?;
     game.run();
 
     Ok(())

@@ -1,6 +1,7 @@
 pub mod scoreboard;
 
 mod helpers;
+pub mod states;
 
 use amethyst::prelude::*;
 use amethyst::renderer::SpriteSheetHandle;
